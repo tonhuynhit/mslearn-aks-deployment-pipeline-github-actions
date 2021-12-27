@@ -6,7 +6,7 @@ on:
 
     # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-  
+
 jobs:
   build_push_image:
     runs-on: ubuntu-latest
@@ -42,6 +42,19 @@ jobs:
         uses: Azure/setup-helm@v1
         with:
           version: v3.3.1
+
+      - name: Log in with Azure
+        uses: azure/login@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+
+      - uses: azure/k8s-set-context@v2
+        with:
+          method: service-account
+          cluster-type: arc
+          cluster-name: apac-contoso-video
+          resource-group: hei-apac-qa
+          token: "${{ secrets.SA_TOKEN }}"
 
       - name: Get AKS Credentials
         uses: Azure/aks-set-context@v1
