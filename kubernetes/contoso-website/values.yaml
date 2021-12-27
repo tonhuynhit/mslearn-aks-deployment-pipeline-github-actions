@@ -1,0 +1,7 @@
+image:
+  registry: apaccontainer
+  name: contoso-website
+  tag: latest
+
+dns:
+  name: bad2302b2bba4bf4b5cc.southeastasia.aksapp.io
