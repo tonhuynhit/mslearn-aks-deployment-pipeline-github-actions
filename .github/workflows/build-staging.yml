@@ -43,10 +43,16 @@ jobs:
         with:
           version: v3.3.1
 
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: "${{ secrets.AZURE_CREDENTIALS }}"
+        run: echo "$STEPS_CONTEXT"
+
       - name: Log in with Azure
         uses: azure/login@v1
         with:
-          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+          creds: "${{ secrets.AZURE_CREDENTIALS }}"
+        continue-on-error: true
 
       - uses: azure/k8s-set-context@v2
         with:
@@ -55,13 +61,15 @@ jobs:
           cluster-name: apac-contoso-video
           resource-group: hei-apac-qa
           token: "${{ secrets.SA_TOKEN }}"
+        continue-on-error: true
 
       - name: Get AKS Credentials
         uses: Azure/aks-set-context@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          creds: "${{ secrets.AZURE_CREDENTIALS }}"
           resource-group: hei-apac-qa
           cluster-name: apac-contoso-video
+        continue-on-error: true
 
       - name: Run Helm Deploy
         run: |
